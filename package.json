@@ -1,0 +1,66 @@
+{
+  "name": "QaApp",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+    "test": "jest",
+    "lint": "eslint .",
+    "start-web": "react-scripts start",
+    "build-web": "react-scripts build",
+    "test-web": "react-scripts test",
+    "eject-web": "react-scripts eject",
+    "start-native": "expo start",
+    "build:ios": "expo build:ios",
+    "build:android": "expo build:android"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "expo": "^37.0.12",
+    "react-art": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-native-picker-select": "^7.0.0",
+    "react-native-web": "^0.12.2",
+    "react-scripts": "3.4.1",
+    "@react-native-community/checkbox": "^0.4.1",
+    "@react-native-community/picker": "^1.6.0",
+    "react": "16.11.0",
+    "react-native": "0.62.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.2",
+    "@babel/runtime": "^7.6.2",
+    "@react-native-community/eslint-config": "^0.0.5",
+    "babel-jest": "^24.9.0",
+    "eslint": "^6.5.1",
+    "jest": "^24.9.0",
+    "metro-react-native-babel-preset": "^0.58.0",
+    "react-test-renderer": "16.11.0",
+    "babel-plugin-module-resolver": "^4.0.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-react-jsx-source": "^6.22.0",
+    "babel-preset-expo": "^8.2.1"
+  },
+  "jest": {
+    "preset": "react-native"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
