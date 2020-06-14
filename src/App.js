@@ -19,6 +19,7 @@ import {
 } from 'react-native';
 
 
+import { LangComponent } from "./components/LangComponent"
 import { LoginPage } from "./components/LoginPage"
 import { UserPage } from "./components/UserPage"
 
@@ -26,11 +27,11 @@ import langs from "./langs"
 
 const App: () => React$Node = () => {
   const [ user, setUser ] = useState()
-  const [ lang, setLang ] = useState()
+  const [ lang, setLang ] = useState("English")
 
   useEffect(() => {
     if(Platform.OS === "web") document.querySelector("title").innerText = user ? "Main page" : "Login page"
-    setLang(user?.lang)
+    if(user) setLang(user?.lang)
   }, [ user ])
 
   const logoutHandler = () => {
@@ -45,15 +46,16 @@ const App: () => React$Node = () => {
           style={styles.scrollView}>
           <View style={ styles.appContainer }>
           <View style={styles.appHeader}>
-            <Text style={styles.appHeaderText} accessibilityLabel="Header label" testID="Header label">{ user ? `${langs(user.lang, "Hello")}, ${ user.login }!` : langs(lang, "Not authorized")}</Text></View>
-            {user && <TouchableOpacity accessibilityLabel="Logout"  testID="Logout" style={ styles.logout } onPress={logoutHandler}>
-                <Text style={ styles.logoutText }>{ langs(lang, "logout")} </Text>
-              </TouchableOpacity>
-            }
-            <View style={styles.appContent} accessibilityLabel="Content block" testID="Content block">
+            <Text style={styles.appHeaderText} accessibilityLabel={langs(lang, "Header label")} testID={langs(lang, "Header label")}>{ user ? `${langs(user.lang, "Hello")}, ${ user.login }!` : langs(lang, "Not authorized")}</Text></View>
+            {user 
+              ? <TouchableOpacity accessibilityLabel={langs(lang, "Logout")} testID={langs(lang, "Logout")} style={ styles.logout } onPress={logoutHandler}>
+                  <Text style={ styles.logoutText }>{ langs(lang, "logout")} </Text>
+                </TouchableOpacity>
+              : <LangComponent lang={lang} onSetLang={setLang} />}
+            <View style={styles.appContent} accessibilityLabel={langs(lang, "Content block")} testID={langs(lang, "Content block")}>
               { user 
                 ? <UserPage user={user}/> 
-                : <LoginPage onLogin={ setUser } onSetLang={setLang} />
+                : <LoginPage lang={lang} onLogin={ setUser } onSetLang={setLang} />
               }
             </View>
           </View>

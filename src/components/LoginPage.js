@@ -13,17 +13,12 @@ import {
 
 import langs from "./../langs"
 
-export const LoginPage = ({ onLogin, onSetLang }) => {
+export const LoginPage = ({ lang, onLogin, onSetLang }) => {
 
     const [ login, setLogin ] = useState("")
     const [ password, setPassword ] = useState("")
-    const [ lang, setLang ] = useState("English")
     const [ remember, setRemember ] = useState(false)
     const [ validation, setValidation ] = useState({})
-
-    useEffect(() => {
-        onSetLang(lang)
-    }, [ lang, onSetLang ])
 
     useEffect(() => {
         const v = {}
@@ -38,19 +33,19 @@ export const LoginPage = ({ onLogin, onSetLang }) => {
         })
     }
 
-    return <View style={styles.loginContainer} accessibilityLabel="Authorization form" testID="Authorization form">
+    return <View style={styles.loginContainer} accessibilityLabel={langs(lang, "Authorization form")} testID={langs(lang, "Authorization form")}>
         <View style={styles.label}>
             <Text>{ langs(lang, "Login") }:</Text>
-            <TextInput style={styles.input} onChangeText={setLogin} value={ login } accessibilityLabel="Login input" testID="Login input"/>
+            <TextInput style={styles.input} onChangeText={setLogin} value={ login } accessibilityLabel={langs(lang, "Login input")} testID={langs(lang, "Login input")}/>
         </View>
         <View style={styles.label}>
             <Text>{ langs(lang, "Password") }:</Text>
-            <TextInput style={styles.input} onChangeText={setPassword} value={ password } accessibilityLabel="Password input" testID="Password input" secureTextEntry={true}/>
+            <TextInput style={styles.input} onChangeText={setPassword} value={ password } accessibilityLabel={langs(lang, "Password input")} testID={langs(lang, "Password input")} secureTextEntry={true}/>
         </View>
         <View style={styles.loginOptions}>
             <View style={styles.optionLabel}>
                 <Text style={styles.optionLabelText}>{ langs(lang, "Language") }:</Text>
-                <Picker itemStyle={{fontSize: 13}} mode={Picker.MODE_DROPDOWN} style={styles.optionPicker} selectedValue={ lang } onValueChange={setLang} accessibilityLabel="Language select" testID="Language select">
+                <Picker itemStyle={{fontSize: 13}} mode={Picker.MODE_DROPDOWN} style={styles.optionPicker} selectedValue={ lang } onValueChange={onSetLang} accessibilityLabel={langs(lang, "Language select")} testID={langs(lang, "Language select")}>
                     <Picker.Item label="Русский" value="Russian" />
                     <Picker.Item label="English" value="English" />
                 </Picker>
@@ -58,12 +53,12 @@ export const LoginPage = ({ onLogin, onSetLang }) => {
             <View style={styles.optionLabel}>
                 <Text style={styles.optionLabelText}>{ langs(lang, "Remember") }:</Text>
                 <TouchableOpacity  onPress={e => setRemember(!remember)}>
-                    <CheckBox boxType={"square"} style={styles.CheckBox} value={remember} accessibilityLabel="Remember me checkbox" testID="Remember me checkbox"/> 
+                    <CheckBox boxType={"square"} style={styles.CheckBox} value={remember} accessibilityLabel={langs(lang, "Remember me checkbox")} testID={langs(lang, "Remember me checkbox")}/> 
                 </TouchableOpacity>
             </View>
         </View>
         <View style={styles.submitWrapper}>
-            <Button style={styles.loginButton} disabled={Object.keys(validation).length > 0} accessibilityLabel="Login button" testID="Login button" onPress={ handleLogin } title={ langs(lang, "Submit") }/>
+            <Button style={styles.loginButton} disabled={Object.keys(validation).length > 0} accessibilityLabel={langs(lang, "Login button")} testID={langs(lang, "Login button")} onPress={ handleLogin } title={ langs(lang, "Submit") }/>
         </View>
     </View>
 }

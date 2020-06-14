@@ -1,4 +1,4 @@
-const langStrings = {
+export const translations = {
     English: {
         Login: "Login",
         Password: "Password",
@@ -9,8 +9,19 @@ const langStrings = {
         PasswordValidation: "Password must be more than 4 characters",
         logout: "Logout",
         Hello: "Hello",
-        "Not authorized": "Not authorized"
-
+        "Not authorized": "Not authorized",
+        label: "En",
+        "Header label": "Header label",
+        "Logout": "Logout",
+        "Content block": "Content block",
+        "Authorization form": "Authorization form",
+        "Login input": "Login input",
+        "Password input": "Password input",
+        "Language select": "Language select",
+        "Remember me checkbox": "Remember me checkbox",
+        "Login button": "Login button",
+        "Private content": "Private content",
+        "Language menu": "Language menu"
     },
     Russian: {
         Login: "Логин",
@@ -22,8 +33,20 @@ const langStrings = {
         PasswordValidation: "Пароль должен содержать не менее четырех символов",
         logout: "Выход",
         Hello: "Привет",
-        "Not authorized": "Пожалуйста, авторизуйтесь"
+        "Not authorized": "Пожалуйста, авторизуйтесь",
+        label: "Ру",
+        "Метка заголовка": "",
+        "Logout": "Выход",
+        "Content block": "Блок контента",
+        "Authorization form": "Форма авторизации",
+        "Login input": "Поле ввода логина",
+        "Password input": "Поле ввода пароля",
+        "Language select": "Выбор языка",
+        "Remember me checkbox": "Чекбокс запомнить меня",
+        "Login button": "Кнопка входа",
+        "Private content": "Приватный контент",
+        "Language menu": "Меню выбора языка"
     }
 }
 
-export default (lang="English", str) => langStrings[lang][str] || str
+export default (lang="English", str) => translations[lang][str] || str
