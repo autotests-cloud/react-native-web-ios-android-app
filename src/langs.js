@@ -10,7 +10,7 @@ export const translations = {
         logout: "Logout",
         Hello: "Hello",
         "Not authorized": "Not authorized",
-        label: "En",
+        label: "EN",
         "Header label": "Header label",
         "Logout": "Logout",
         "Content block": "Content block",
@@ -21,7 +21,9 @@ export const translations = {
         "Remember me checkbox": "Remember me checkbox",
         "Login button": "Login button",
         "Private content": "Private content",
-        "Language menu": "Language menu"
+        "Language menu": "Language menu",
+        private1: "Here is your private content #1",
+        private2: "and private content #2"
     },
     ru: {
         Login: "Логин",
@@ -34,8 +36,8 @@ export const translations = {
         logout: "Выход",
         Hello: "Привет",
         "Not authorized": "Пожалуйста, авторизуйтесь",
-        label: "Ру",
-        "Метка заголовка": "",
+        label: "RU",
+        "Header label": "Надпись заголовока",
         "Logout": "Выход",
         "Content block": "Блок контента",
         "Authorization form": "Форма авторизации",
@@ -45,7 +47,9 @@ export const translations = {
         "Remember me checkbox": "Чекбокс запомнить меня",
         "Login button": "Кнопка входа",
         "Private content": "Приватный контент",
-        "Language menu": "Меню выбора языка"
+        "Language menu": "Меню выбора языка",
+        private1: "Ваш приватный контент #1 ",
+        private2: "и приватный контент #2"
     }
 }
 
