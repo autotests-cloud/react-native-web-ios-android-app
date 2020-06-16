@@ -1,5 +1,5 @@
 export const translations = {
-    English: {
+    en: {
         Login: "Login",
         Password: "Password",
         Language: "Language",
@@ -23,7 +23,7 @@ export const translations = {
         "Private content": "Private content",
         "Language menu": "Language menu"
     },
-    Russian: {
+    ru: {
         Login: "Логин",
         Password: "Пароль",
         Language: "Язык",
@@ -49,4 +49,4 @@ export const translations = {
     }
 }
 
-export default (lang="English", str) => translations[lang][str] || str
+export default (lang="en", str) => translations[lang][str] || str

@@ -46,8 +46,8 @@ export const LoginPage = ({ lang, onLogin, onSetLang }) => {
             <View style={styles.optionLabel}>
                 <Text style={styles.optionLabelText}>{ langs(lang, "Language") }:</Text>
                 <Picker itemStyle={{fontSize: 13}} mode={Picker.MODE_DROPDOWN} style={styles.optionPicker} selectedValue={ lang } onValueChange={onSetLang} accessibilityLabel={langs(lang, "Language select")} testID={langs(lang, "Language select")}>
-                    <Picker.Item label="Русский" value="Russian" />
-                    <Picker.Item label="English" value="English" />
+                    <Picker.Item label="Русский" value="ru" />
+                    <Picker.Item label="English" value="en" />
                 </Picker>
             </View>
             <View style={styles.optionLabel}>

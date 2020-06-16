@@ -23,11 +23,18 @@ import { LangComponent } from "./components/LangComponent"
 import { LoginPage } from "./components/LoginPage"
 import { UserPage } from "./components/UserPage"
 
-import langs from "./langs"
+import langs, { translations } from "./langs"
+
+let langByUrl = Platform.OS === "web" ? window.location.hash.replace("#","") : ""
+langByUrl = translations[langByUrl] ? langByUrl : "en"
 
 const App: () => React$Node = () => {
   const [ user, setUser ] = useState()
-  const [ lang, setLang ] = useState("English")
+  const [ lang, setLang ] = useState(langByUrl)
+  
+  useEffect(() => {
+    if(Platform.OS === "web") window.location.hash = lang
+  }, [ lang ])
 
   useEffect(() => {
     if(Platform.OS === "web") document.querySelector("title").innerText = user ? "Main page" : "Login page"
