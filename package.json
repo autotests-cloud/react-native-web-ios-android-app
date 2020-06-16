@@ -20,8 +20,6 @@
     "extends": "react-app"
   },
   "dependencies": {
-    "@react-native-community/checkbox": "^0.4.2",
-    "@react-native-community/picker": "^1.6.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
