@@ -37,7 +37,7 @@ export const translations = {
         Hello: "Привет",
         "Not authorized": "Пожалуйста, авторизуйтесь",
         label: "RU",
-        "Header label": "Надпись заголовока",
+        "Header label": "Надпись заголовка",
         "Logout": "Выход",
         "Content block": "Блок контента",
         "Authorization form": "Форма авторизации",
