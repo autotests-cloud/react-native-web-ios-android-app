@@ -7,6 +7,7 @@
  */
 
 import React, { useState, useEffect } from 'react'
+
 import {
   SafeAreaView,
   StyleSheet,
@@ -18,32 +19,44 @@ import {
   Platform
 } from 'react-native';
 
+import { 
+  useDispatch, useSelector
+} from 'react-redux'
+
+import { getAuth, postLogout } from "./reducers/auth"
 
 import { LangComponent } from "./components/LangComponent"
 import { LoginPage } from "./components/LoginPage"
 import { UserPage } from "./components/UserPage"
 
-import langs, { translations } from "./langs"
+// let langByUrl = Platform.OS === "web" ? window.location.hash.replace("#","") : ""
+// langByUrl = translations[langByUrl] ? langByUrl : "en"
 
-let langByUrl = Platform.OS === "web" ? window.location.hash.replace("#","") : ""
-langByUrl = translations[langByUrl] ? langByUrl : "en"
 
-const App: () => React$Node = () => {
-  const [ user, setUser ] = useState()
-  const [ lang, setLang ] = useState(langByUrl)
+
+
+export const App: () => React$Node = () => {
   
+  const dispatch = useDispatch()
+  const { lang, translations } = useSelector(state => state.app)
+  const { user } = useSelector(state => state.auth)
+
+  useEffect(() => {
+    dispatch(getAuth())
+  }, [ dispatch ])
+
   useEffect(() => {
     if(Platform.OS === "web") window.location.hash = lang
   }, [ lang ])
 
   useEffect(() => {
     if(Platform.OS === "web") document.querySelector("title").innerText = user ? "Main page" : "Login page"
-    if(user) setLang(user?.lang)
   }, [ user ])
 
   const logoutHandler = () => {
-    setUser()
+    dispatch(postLogout())
   }
+
   return (
     <>
       <StatusBar barStyle="dark-content" />
@@ -53,16 +66,16 @@ const App: () => React$Node = () => {
           style={styles.scrollView}>
           <View style={ styles.appContainer }>
           <View style={styles.appHeader}>
-            <Text style={styles.appHeaderText} accessibilityLabel={langs(lang, "Header label")} testID={langs(lang, "Header label")}>{ user ? `${langs(user.lang, "Hello")}, ${ user.login }!` : langs(lang, "Not authorized")}</Text></View>
+            <Text style={styles.appHeaderText} accessibilityLabel={translations["Header label"]} testID={translations["Header label"]}>{ user ? `${translations["Hello"]}, ${ user.email }!` : translations["Not authorized"]}</Text></View>
             {user 
-              ? <TouchableOpacity accessibilityLabel={langs(lang, "Logout")} testID={langs(lang, "Logout")} style={ styles.logout } onPress={logoutHandler}>
-                  <Text style={ styles.logoutText }>{ langs(lang, "logout")} </Text>
+              ? <TouchableOpacity accessibilityLabel={translations["Logout"]} testID={translations["Logout"]} style={ styles.logout } onPress={logoutHandler}>
+                  <Text style={ styles.logoutText }>{ translations["logout"]} </Text>
                 </TouchableOpacity>
-              : <LangComponent lang={lang} onSetLang={setLang} />}
-            <View style={styles.appContent} accessibilityLabel={langs(lang, "Content block")} testID={langs(lang, "Content block")}>
+              : <LangComponent />}
+            <View style={styles.appContent} accessibilityLabel={translations["Content block"]} testID={translations["Content block"]}>
               { user 
                 ? <UserPage user={user}/> 
-                : <LoginPage lang={lang} onLogin={ setUser } onSetLang={setLang} />
+                : <LoginPage />
               }
             </View>
           </View>
@@ -123,5 +136,3 @@ const styles = StyleSheet.create({
     color: "white",
   }
 })
-
-export default App;

@@ -4,7 +4,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import AppContainer from './src/App'
+import { AppContainer } from './src/AppContainer'
 
 class App extends React.Component {
   render() {

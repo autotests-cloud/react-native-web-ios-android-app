@@ -60,3 +60,4 @@ buck-out/
 android/app/build
 
 keys
+.env

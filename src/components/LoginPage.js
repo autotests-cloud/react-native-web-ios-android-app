@@ -11,54 +11,65 @@ import {
     TouchableOpacity,
   } from 'react-native';
 
-import langs from "./../langs"
+import { useDispatch, useSelector } from 'react-redux'
+import { switchLang } from "./../reducers/app"
+import { postAuth } from "./../reducers/auth"
 
-export const LoginPage = ({ lang, onLogin, onSetLang }) => {
+export const LoginPage = () => {
+    
+    const { translations, lang } = useSelector(state => state.app)
+    const dispatch = useDispatch()
 
-    const [ login, setLogin ] = useState("")
+    const [ email, setEmail ] = useState("")
     const [ password, setPassword ] = useState("")
     const [ remember, setRemember ] = useState(false)
     const [ validation, setValidation ] = useState({})
 
     useEffect(() => {
         const v = {}
-        if(login?.length < 1) v.login = langs(lang, "LoginValidation")
-        if(password?.length < 1) v.login = langs(lang, "PasswordValidation")
+        if(email?.length < 1) v.email = translations["LoginValidation"]
+        if(password?.length < 1) v.email = translations["PasswordValidation"]
         setValidation(v)
-    }, [ login, password, lang, remember ])
+    }, [ email, password, lang, remember ])
 
-    const handleLogin = () => {
-        onLogin(Object.keys(validation).length ? undefined : {
-            login, password, lang, remember
-        })
+    const onSwitchLang = (lang) => {
+        dispatch(switchLang(lang))
     }
 
-    return <View style={styles.loginContainer} accessibilityLabel={langs(lang, "Authorization form")} testID={langs(lang, "Authorization form")}>
+    const handleLogin = () => {
+        if(Object.keys(validation).length) return
+        dispatch(postAuth({ email, password, lang }))
+        // onLogin(Object.keys(validation).length ? undefined : {
+        //     login, password, lang, remember
+        // })
+    }
+
+    return <View style={styles.loginContainer} accessibilityLabel={translations["Authorization form"]} testID={translations["Authorization form"]}>
         <View style={styles.label}>
-            <Text>{ langs(lang, "Login") }:</Text>
-            <TextInput style={styles.input} onChangeText={setLogin} value={ login } accessibilityLabel={langs(lang, "Login input")} testID={langs(lang, "Login input")}/>
+            <Text>{ translations["Login"] }:</Text>
+            <TextInput style={styles.input} onChangeText={setEmail} value={ email } accessibilityLabel={translations["Login input"]} testID={translations["Login input"]}/>
         </View>
         <View style={styles.label}>
-            <Text>{ langs(lang, "Password") }:</Text>
-            <TextInput style={styles.input} onChangeText={setPassword} value={ password } accessibilityLabel={langs(lang, "Password input")} testID={langs(lang, "Password input")} secureTextEntry={true}/>
+            <Text>{ translations["Password"] }:</Text>
+            <TextInput style={styles.input} onChangeText={setPassword} value={ password } accessibilityLabel={translations["Password input"]} testID={translations["Password input"]} secureTextEntry={true}/>
         </View>
         <View style={styles.loginOptions}>
             <View style={styles.optionLabel}>
-                <Text style={styles.optionLabelText}>{ langs(lang, "Language") }:</Text>
-                <Picker itemStyle={{fontSize: 13}} mode={Picker.MODE_DROPDOWN} style={styles.optionPicker} selectedValue={ lang } onValueChange={onSetLang} accessibilityLabel={langs(lang, "Language select")} testID={langs(lang, "Language select")}>
+                <Text style={styles.optionLabelText}>{ translations["Language"] }:</Text>
+                <Picker itemStyle={{fontSize: 13}} mode={Picker.MODE_DROPDOWN} style={styles.optionPicker} selectedValue={ lang } onValueChange={onSwitchLang} accessibilityLabel={translations["Language select"]} testID={translations["Language select"]}>
                     <Picker.Item label="Русский" value="ru" />
                     <Picker.Item label="English" value="en" />
                 </Picker>
             </View>
             <View style={styles.optionLabel}>
-                <Text style={styles.optionLabelText}>{ langs(lang, "Remember") }:</Text>
+                <Text style={styles.optionLabelText}>{ translations["Remember"] }:</Text>
                 <TouchableOpacity  onPress={e => setRemember(!remember)}>
-                    <CheckBox boxType={"square"} style={styles.CheckBox} value={remember} accessibilityLabel={langs(lang, "Remember me checkbox")} testID={langs(lang, "Remember me checkbox")}/> 
+                    <CheckBox boxType={"square"} style={styles.CheckBox} value={remember} accessibilityLabel={translations["Remember me checkbox"]} testID={translations["Remember me checkbox"]}/> 
                 </TouchableOpacity>
             </View>
         </View>
         <View style={styles.submitWrapper}>
-            <Button style={styles.loginButton} disabled={Object.keys(validation).length > 0} accessibilityLabel={langs(lang, "Login button")} testID={langs(lang, "Login button")} onPress={ handleLogin } title={ langs(lang, "Submit") }/>
+            <Button style={styles.loginButton} disabled={Object.keys(validation).length > 0} accessibilityLabel={translations["Login button"]} testID={translations["Login button"]} onPress={ handleLogin } title={ translations["Submit"] }/>
         </View>
     </View>
 }

@@ -4,18 +4,32 @@ import {
     View,
     Text,
     TouchableOpacity,
-  } from 'react-native';
+} from 'react-native'
 
-  import langs, { translations } from "./../langs"
+import {  useDispatch, useSelector } from 'react-redux'
 
-export const LangComponent = ({ lang, onSetLang }) => (<View style={styles.langContainer} accessibilityLabel={langs(lang, "Language menu")} testID={langs(lang, "Language menu")}>
-        {Object.keys(translations).map((key, index) => 
-                <TouchableOpacity style={styles.langItem} key={key} onPress={e => onSetLang(key)}>
-                    <Text style={lang === key ? styles.active : styles.lang }>{ translations[key].label }</Text>
-                    {(index < Object.keys(translations).length - 1) && <Text style={styles.separator}>/</Text>}
+import { switchLang } from "./../reducers/app"
+
+export const LangComponent = () => {
+    
+    const { lang, translations, languages } = useSelector(state => state.app)
+    const dispatch = useDispatch()
+    
+    const onSwitchLang = (lang) => {
+        dispatch(switchLang(lang))
+    }
+
+    return (<View style={styles.langContainer} accessibilityLabel={translations["Language menu"]} testID={translations["Language menu"]}>
+        {
+            languages.map((key, index) => 
+                <TouchableOpacity style={styles.langItem} key={key} onPress={e => onSwitchLang(key)}>
+                    <Text style={lang === key ? styles.active : styles.lang }>{ translations[key] }</Text>
+                    {(index < languages.length - 1) && <Text style={styles.separator}>/</Text>}
                 </TouchableOpacity>
-            )}
+            )
+        }
     </View>)
+}
 
 const styles = StyleSheet.create({
     langItem: {
