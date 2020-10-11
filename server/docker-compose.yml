@@ -1,0 +1,35 @@
+version: "3"
+services: 
+    client:
+        stdin_open: true
+        container_name: qa.guru.api
+        build:
+            context: .
+            dockerfile: Dockerfile
+        restart: always
+        working_dir: /app
+        expose:
+            - "27017"
+        ports:
+            - "3000:3000"
+        environment:
+            - NODE_ENV=production
+            - PORT=3000
+            - JWT_KEY=in this place the cat typed something indecent
+            - MONGO_URI=mongodb://test:test@mongo:27017/api?AuthMechanism=SCRAM-SHA-1&AuthSource=admin
+        depends_on:
+            - 'mongo'
+    mongo:
+        image: mongo:latest
+        container_name: "mongodb"
+        volumes:
+            - mongo-data:/data/db
+            - mongo-config:/data/configdb
+        environment:
+            - MONGO_INITDB_ROOT_USERNAME=test
+            - MONGO_INITDB_ROOT_PASSWORD=test
+        ports:
+            - "27017:27017"
+volumes:
+    mongo-data:
+    mongo-config:
