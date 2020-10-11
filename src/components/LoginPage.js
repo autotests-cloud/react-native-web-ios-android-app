@@ -30,7 +30,7 @@ export const LoginPage = () => {
         if(email?.length < 1) v.email = translations["LoginValidation"]
         if(password?.length < 1) v.email = translations["PasswordValidation"]
         setValidation(v)
-    }, [ email, password, lang, remember ])
+    }, [ email, password, lang, remember, translations ])
 
     const onSwitchLang = (lang) => {
         dispatch(switchLang(lang))
@@ -39,9 +39,6 @@ export const LoginPage = () => {
     const handleLogin = () => {
         if(Object.keys(validation).length) return
         dispatch(postAuth({ email, password, lang }))
-        // onLogin(Object.keys(validation).length ? undefined : {
-        //     login, password, lang, remember
-        // })
     }
 
     return <View style={styles.loginContainer} accessibilityLabel={translations["Authorization form"]} testID={translations["Authorization form"]}>

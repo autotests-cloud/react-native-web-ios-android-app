@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 
 import {
   SafeAreaView,
@@ -28,11 +28,6 @@ import { getAuth, postLogout } from "./reducers/auth"
 import { LangComponent } from "./components/LangComponent"
 import { LoginPage } from "./components/LoginPage"
 import { UserPage } from "./components/UserPage"
-
-// let langByUrl = Platform.OS === "web" ? window.location.hash.replace("#","") : ""
-// langByUrl = translations[langByUrl] ? langByUrl : "en"
-
-
 
 
 export const App: () => React$Node = () => {
