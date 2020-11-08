@@ -3,8 +3,7 @@ const mongoose = require("mongoose")
 const UserSchema = new mongoose.Schema(
     {
         username: {
-            type: String,
-            unique: true
+            type: String
         },
         lang: {
             type: String,
@@ -30,9 +29,9 @@ const UserSchema = new mongoose.Schema(
         timestamps: true,
         toJSON: {
             transform: (doc, ret, options) => {
-                const { email, username, _id, createdAt } = ret
+                const { email, username, createdAt, lang } = ret
                 return { 
-                    email, username, createdAt
+                    email, username, lang, createdAt
                 }
             }
         }

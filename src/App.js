@@ -16,7 +16,8 @@ import {
   Text,
   StatusBar,
   TouchableOpacity,
-  Platform
+  Platform,
+  Dimensions
 } from 'react-native';
 
 import { 
@@ -34,7 +35,7 @@ export const App: () => React$Node = () => {
   
   const dispatch = useDispatch()
   const { lang, translations } = useSelector(state => state.app)
-  const { user } = useSelector(state => state.auth)
+  const { user, pending } = useSelector(state => state.auth)
 
   useEffect(() => {
     dispatch(getAuth())
@@ -60,17 +61,26 @@ export const App: () => React$Node = () => {
           contentInsetAdjustmentBehavior="automatic"
           style={styles.scrollView}>
           <View style={ styles.appContainer }>
-          <View style={styles.appHeader}>
-            <Text style={styles.appHeaderText} accessibilityLabel={translations["Header label"]} testID={translations["Header label"]}>{ user ? `${translations["Hello"]}, ${ user.email }!` : translations["Not authorized"]}</Text></View>
-            {user 
-              ? <TouchableOpacity accessibilityLabel={translations["Logout"]} testID={translations["Logout"]} style={ styles.logout } onPress={logoutHandler}>
-                  <Text style={ styles.logoutText }>{ translations["logout"]} </Text>
-                </TouchableOpacity>
-              : <LangComponent />}
+            <View style={styles.appHeader}>
+              <Text style={styles.appHeaderText} accessibilityLabel={translations["Header label"]} testID={translations["Header label"]}>
+                { user ? `${translations["Hello"]}, ${ user.email }!` : pending ? null : translations["Not authorized"]}
+              </Text>
+            </View>
+            {
+              user 
+                ? <TouchableOpacity accessibilityLabel={translations["Logout"]} testID={translations["Logout"]} style={ styles.logout } onPress={logoutHandler}>
+                    <Text style={ styles.logoutText }>{ translations["logout"]} </Text>
+                  </TouchableOpacity>
+                : pending 
+                    ? null
+                    : <LangComponent /> 
+            }
             <View style={styles.appContent} accessibilityLabel={translations["Content block"]} testID={translations["Content block"]}>
               { user 
                 ? <UserPage user={user}/> 
-                : <LoginPage />
+                : pending 
+                  ? null
+                  : <LoginPage /> 
               }
             </View>
           </View>
@@ -79,6 +89,7 @@ export const App: () => React$Node = () => {
     </>
   )
 }
+const isMobile = Dimensions.get('window').width > 410 ? undefined : 410
 
 const styles = StyleSheet.create({
   scrollView: {
@@ -102,11 +113,13 @@ const styles = StyleSheet.create({
     display: "flex",
     height: 60,
     alignSelf: "stretch",
-    textAlign: "center",
+    textAlign: isMobile ? "left" : "center",
     backgroundColor: "#282c34",
     textAlignVertical: "center",
-    alignItems: "center",
+    alignItems: isMobile  ? "left" : "center",
     justifyContent: "center",
+    width: isMobile,
+    paddingLeft: 24
   },
   appHeaderText: {
     fontSize: 22,

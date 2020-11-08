@@ -10,7 +10,7 @@ export const requestData = async (url, method = "GET", params, data) => await ax
   params,
   baseURL: BASE_URL,
   data,
-  headers: { Authorization: "Bearer " + localStorage.getItem("token") }
+  headers: { Authorization: "Bearer " + (localStorage.getItem("token") || sessionStorage.getItem("token")) }
 }).then(json => json ? Promise.resolve(json.data) : Promise.reject(null))
   .catch((err) => {
     console.error(err)

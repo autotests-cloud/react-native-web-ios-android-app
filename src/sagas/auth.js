@@ -18,9 +18,11 @@ export function * postAuthFlow () {
     try {
       const payload = yield call(requestData, "/api/auth/register_login", "POST", null, action.payload)
       const { token } = payload
-      
-      localStorage.setItem("token", token)
-
+      if(action.payload.remember){
+        localStorage.setItem("token", token)
+      } else {
+        sessionStorage.setItem("token", token)
+      }
       yield put({ type: POST_AUTH_SUCCESS, payload })
     } catch (error) {
       yield put({ type: POST_AUTH_ERROR, error })
@@ -32,8 +34,12 @@ export function * getAuthFlow () {
   while (true) {
     yield take(GET_AUTH_REQUEST)
     try {
-      const payload = yield call(requestData, "/api/auth/", "GET")
-      yield put({ type: GET_AUTH_SUCCESS, payload })
+      if(sessionStorage.getItem("token") || localStorage.getItem("token")){
+        const payload = yield call(requestData, "/api/auth/", "GET")
+        yield put({ type: GET_AUTH_SUCCESS, payload })  
+      } else {
+        yield put({ type: GET_AUTH_ERROR })  
+      }
     } catch (error) {
       yield put({ type: GET_AUTH_ERROR, error })
     }

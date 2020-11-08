@@ -14,15 +14,20 @@ export const DELETE_AUTH_ERROR   = 'DELETE/AUTH/ERROR'
 
 
 const initialState = {
+  pending: true
 }
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case POST_AUTH_REQUEST:
+      return { ...state, success: undefined, error: undefined, pending: undefined }
     case POST_AUTH_SUCCESS: case GET_AUTH_SUCCESS:
-      return { ...action.payload, success: true }
+      return { ...action.payload, success: true, error: undefined, pending: undefined }
+    case POST_AUTH_ERROR: case GET_AUTH_ERROR:
+      return { ...state, success: undefined, error: action.error, pending: undefined }
     case DELETE_AUTH_REQUEST:
       localStorage.removeItem("token")
-      return { ...initialState }
+      return { ...initialState, pending: undefined }
     default:
       return state
   }

@@ -11,6 +11,7 @@ import {
     TouchableOpacity,
   } from 'react-native';
 
+  
 import { useDispatch, useSelector } from 'react-redux'
 import EmailValidator from "email-validator"
 import PasswordValidator from "password-validator"
@@ -24,57 +25,56 @@ passwordSchema
     .is().max(100)                                  // Maximum length 100
     .has().uppercase()                              // Must have uppercase letters
     .has().lowercase()                              // Must have lowercase letters
-    .has().digits(1)                                // Must have at least 1 digits
-    // .has().symbols()
+    .has().digits(2)                                // Must have at least 2 digits
     .has().not().spaces()                           // Should not have spaces
-    .is().not().oneOf(['Passw0rd', 'Password123']) // Blacklist these values
+    .is().not().oneOf(['Passw0rd', 'Password123']); // Blacklist these values
  
 
-const PasswordErrop = ({error}) => error?.length ? <View style={styles.validateError}>
-    <Text style={styles.validateErrorMessage}>Your password should contain:</Text>
-    <View style={{marginLeft: 16}}>
-        { error.includes("min") && <Text style={styles.validateErrorMessage}>Minimum length of 8 characters</Text> }
-        { error.includes("digits") && <Text style={styles.validateErrorMessage}>Numerical characters (0-9)</Text> }
-        {/* { error.includes("symbols") && <Text style={styles.validateErrorMessage}>Special characters</Text> } */}
-        { error.includes("uppercase") && <Text style={styles.validateErrorMessage}>Uppercase letter</Text> }
-        { error.includes("lowercase") && <Text style={styles.validateErrorMessage}>Lowercase letter</Text> }
-        { error.includes("spaces") && <Text style={styles.validateErrorMessage}>No include spaces</Text> }
+const PasswordErrop = (error) => error ? <View>
+    <View>
+        <Text>Your password should contain: </Text>
+    </View>
+    <View>
+        <Text>Minimum length of 8 characters</Text>
+        <Text>Numerical characters (0-9)</Text>
+        <Text>Special characters</Text>
+        <Text>Uppercase letter</Text>
+        <Text>Lowercase letter</Text>
     </View>
 </View> : null
 
-const EmailErrop = ({error}) => error ? <View style={styles.validateError}>
-        <Text style={styles.validateErrorMessage}>Wrong mail syntaxis!</Text>
+const EmailErrop = (error) => error ? <View>
+    <View>
+        <Text>Wrong mail syntaxis!</Text>
+    </View>
 </View> : null
 
-export const LoginPage = () => {
+export const RecoverPasswordPage = () => {
     
     const { translations, lang } = useSelector(state => state.app)
-    const { error } = useSelector(state => state.auth)
-
     const dispatch = useDispatch()
-
-    const [ emailError, setEmailError ] = useState(false)
-    const [ passwordError, setPasswordError ] = useState(false)
 
     const [ email, setEmail ] = useState("")
     const [ password, setPassword ] = useState("")
+
+    const [ emailError, setEmailError ] = useState()
+    const [ passwordError, setPasswordError ] = useState(false)
+
+    const [ password, setPassword ] = useState("")
     const [ remember, setRemember ] = useState(false)
-    // const [ validation, setValidation ] = useState({})
+    const [ validation, setValidation ] = useState({})
 
     useEffect(() => {
-        if(!(email + password).length) return
-        // const v = {}
-        // if(email?.length < 1) v.email = translations["LoginValidation"]
-        // if(password?.length < 1) v.password = translations["PasswordValidation"]
-        const validateMailResult = !EmailValidator.validate(email)
+        const v = {}
+        if(email?.length < 1) v.email = translations["LoginValidation"]
+        if(password?.length < 1) v.password = translations["PasswordValidation"]
 
-        setEmailError(validateMailResult)
+        setEmailError(EmailValidator.validate(email))
 
         const validatePassList = passwordSchema.validate(password, { list: true })
-
         setPasswordError(validatePassList)
 
-        // setValidation(v)
+        setValidation(v)
     }, [ email, password, lang, remember, translations ])
 
     const onSwitchLang = (lang) => {
@@ -82,9 +82,12 @@ export const LoginPage = () => {
     }
 
     const handleLogin = () => {
-        if(emailError || passwordError.length){
+
+        if(Object.keys(validation).length) {
+            setPasswordError(true)
             return
         }
+
         dispatch(postAuth({ email, password, lang, remember }))
 
     }
@@ -116,8 +119,7 @@ export const LoginPage = () => {
             </View>
         </View>
         <View style={styles.submitWrapper}>
-            <Button style={styles.loginButton} disabled={password.length < 8 || email.length < 6 || emailError || passwordError.length} accessibilityLabel={translations["Login button"]} testID={translations["Login button"]} onPress={ handleLogin } title={ translations["Submit"] }/>
-            { error ? <Text style={styles.validateErrorMessage}>{error.message}</Text> : null }
+            <Button style={styles.loginButton} disabled={Object.keys(validation).length > 0} accessibilityLabel={translations["Login button"]} testID={translations["Login button"]} onPress={ handleLogin } title={ translations["Submit"] }/>
         </View>
     </View>
 }
@@ -208,16 +210,5 @@ const styles = StyleSheet.create({
     },
     loginError: {
         
-    }, 
-    validateError: {
-        marginTop: 2,
-        padding: 4,
-        marginLeft: 16,
-        alignSelf: "stretch",
-        zIndex: 10,
-    },
-    validateErrorMessage: {
-        fontSize: 13,
-        color: "red",
     }
   })

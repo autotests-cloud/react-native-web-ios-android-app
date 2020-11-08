@@ -8,12 +8,15 @@ services:
             dockerfile: Dockerfile
         restart: always
         working_dir: /app
+        volumes:
+            - ./../build/web:/app/public
         expose:
             - "27017"
         ports:
-            - "3000:3000"
+            - "3005:3005"
         environment:
             - NODE_ENV=production
+            - BASE_EMAIL=example@@autotests.cloud
             - PORT=3000
             - JWT_KEY=in this place the cat typed something indecent
             - MONGO_URI=mongodb://test:test@mongo:27017/api?AuthMechanism=SCRAM-SHA-1&AuthSource=admin
@@ -22,8 +25,9 @@ services:
     mongo:
         image: mongo:latest
         container_name: "mongodb"
+        restart: always
         volumes:
-            - mongo-data:/data/db
+            - mongo-db:/data/db
             - mongo-config:/data/configdb
         environment:
             - MONGO_INITDB_ROOT_USERNAME=test
@@ -31,5 +35,5 @@ services:
         ports:
             - "27017:27017"
 volumes:
-    mongo-data:
+    mongo-db:
     mongo-config:
